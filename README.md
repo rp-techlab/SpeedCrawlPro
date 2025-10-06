@@ -90,220 +90,117 @@ text
 
 ### Step 3: Install Dependencies
 
-Install npm packages
 
+
+    Quick install
+
+    Usage examples
+
+    Output formats
+
+    Troubleshooting
+
+Requirements
+
+    Node.js 20+ recommended (works on 18+)
+
+    Git installed
+
+    Linux/macOS/WSL terminal
+
+Installation
+
+    Install Node 20 with nvm, clone the repo, install dependencies, and install the Playwright browser.
+
+bash
+# Install NVM (if not installed)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source ~/.bashrc 2>/dev/null || source ~/.zshrc 2>/dev/null
+
+# Use Node 20
+nvm install 20
+nvm use 20
+echo "20" > .nvmrc
+node -v
+
+# Clone and install
+git clone https://github.com/rpxsec/SpeedCrawlPro.git
+cd SpeedCrawlPro
 npm install
-Install Playwright browsers (Chromium)
 
-npm run install-browsers
-or
-
+# Install Playwright browser
 npx playwright install chromium
+# or: npm run install-browsers
 
-text
+Quick start
 
-### Step 4: Verify Installation
+    Minimal crawl with JSON output to speedcrawl-output.
 
-Run a test crawl
-
+bash
 npx speedcrawl -u https://example.com --formats json
-Check output directory
 
-ls -la speedcrawl-output/
+    Headful debug with deep JS analysis and JSONL streaming.
 
-text
+bash
+npx speedcrawl -u https://example.com --headful --deep-js-analysis --formats json,jsonl
 
-**Expected output:**
+    SPA forms with faker and replay artifacts.
 
-✅ STEALTH browser launched
-📄 Crawling: https://example.com
-✅ Crawl completed in 5.23s
-📊 Output saved to: ./speedcrawl-output
+bash
+npx speedcrawl -u https://app.example.com/login --submit-forms --use-faker --formats json,jsonl,har,http
 
-text
+CLI options
 
----
+    Core: -u/--url, -p/--pages, -d/--depth, --formats json,jsonl,har,http.
 
-## 🚀 Quick Start
+    Scope: --same-origin, --include-subdomains "*.example.com", --blocked-extensions "jpg,png,css,woff".
 
-### Basic Web Crawl
+    Forms: --submit-forms, --use-faker, -i/--input input.json.
 
-npx speedcrawl -u https://example.com --formats json,jsonl
+    Analysis: --deep-js-analysis, --extract-secrets.
 
-text
+    Browser: --headful, --proxy http://user:pass@host:8080, --no-ssl-check, --user-agent UA.
 
-### Crawl with Form Submission
+    Perf/Log: --request-delay ms, --timeout ms, -v 0..3, --debug.
 
-npx speedcrawl -u https://app.example.com/login
---submit-forms
---use-faker
---formats json,jsonl,har
+For full help:
 
-text
+bash
+npx speedcrawl -h
 
-### Visible Browser Mode (Debug)
+Output files
 
-npx speedcrawl -u https://example.com
---headful
---deep-js-analysis
--v 2
+    speedcrawl-results.json: main results (pages, forms, endpoints, secrets).
 
-text
+    nuclei-targets.jsonl: nuclei‑compatible request targets.
 
----
+    speedcrawl-requests.har: HTTP Archive of requests.
 
-## 📖 Usage Examples
+    http-requests/*.http: raw HTTP for SQLMap/manual replay.
 
-### 1. Basic Crawl with Scope Limits
+    summary.json and summary.md: run statistics and counts.
 
-npx speedcrawl
--u https://example.com
--p 100
--d 3
---formats json,jsonl
+    endpoints.txt, secrets.txt, all-urls.txt, technologies.txt: quick review lists.
 
-text
+Tips
 
-**Explanation:**
-- `-u`: Target URL
-- `-p 100`: Maximum 100 pages
-- `-d 3`: Maximum depth of 3 levels
-- `--formats`: Output formats
+    Use --no-ssl-check on self‑signed TLS targets.
 
-### 2. SPA Form Testing with Faker Data
+    Use --proxy for corporate networks (http/https/socks supported).
 
-npx speedcrawl
--u https://app.example.com/register
---submit-forms
---use-faker
---same-origin
---formats json,jsonl,har,http
+    Reduce scope with -p and -d to avoid heavy runs.
 
-text
+    Reinstall browsers if Chromium fails: npx playwright install chromium.
 
-**What it does:**
-- Fills forms with realistic fake data (email, names, etc.)
-- Submits forms and captures responses
-- Generates HAR file for request replay
-- Creates raw HTTP files for SQLMap
+Troubleshooting
 
-### 3. Deep JavaScript Analysis for API Discovery
+    Chromium missing: npx playwright install chromium.
 
-npx speedcrawl
--u https://app.example.com
---deep-js-analysis
---extract-secrets
---formats json,jsonl
--v 2
+    npx speedcrawl not found: run from repo root or node bin/speedcrawl.js -h.
 
-text
+    Headful error about deviceScaleFactor + viewport: update BrowserManager to avoid deviceScaleFactor when viewport is null (fix included in latest code).
 
-**Features:**
-- Parses JavaScript chunks for hidden endpoints
-- Extracts API routes from minified code
-- Detects secrets (API keys, tokens)
-- Verbose logging level 2
-
-### 4. Proxy + SSL Ignore for Internal Testing
-
-npx speedcrawl
--u https://internal.company.local
---proxy "http://user:pass@proxy.company.local:8080"
---no-ssl-check
---same-origin
---formats json,har
-
-text
-
-**Use case:**
-- Internal pentesting through corporate proxy
-- Self-signed certificates
-- Authenticated proxy support
-
-### 5. Subdomain Crawling with Asset Filtering
-
-npx speedcrawl
--u https://example.com
---same-origin
---include-subdomains "*.example.com"
---blocked-extensions "jpg,png,gif,css,woff,woff2"
--p 500
---formats json,jsonl
-
-text
-
-**Explanation:**
-- Crawls main domain + subdomains
-- Skips image and font files
-- Limits to 500 pages
-
-### 6. Custom Input Data for Forms
-
-Create `input.json`:
-
-{
-"email": "test@example.com",
-"username": "testuser",
-"password": "Test123!@#"
-}
-
-text
-
-Run with custom data:
-
-npx speedcrawl
--u https://app.example.com/login
---submit-forms
--i input.json
---formats json,har
-
-text
-
----
-
-## 🎛️ Command-Line Options
-
-Usage: speedcrawl [options]
-
-Options:
--u, --url <url> Target URL (required)
--p, --pages <number> Max pages to crawl (default: 100)
--d, --depth <number> Max crawl depth (default: 3)
--o, --output <dir> Output directory (default: ./speedcrawl-output)
---formats <formats> Output formats: json,jsonl,har,http (default: json,jsonl)
-
-Scope:
---same-origin Only crawl same-origin links
---include-subdomains <pattern> Include subdomains (e.g., *.example.com)
---blocked-extensions <list> Skip file extensions (comma-separated)
-
-Forms:
---submit-forms Enable form submission
---use-faker Use Faker.js for realistic form data
--i, --input <file> Custom input data JSON file
-
-Analysis:
---deep-js-analysis Enable deep JavaScript chunk analysis
---extract-secrets Scan for secrets and tokens
-
-Browser:
---headful Launch visible browser with devtools
---headless Headless mode (default)
---proxy <url> Proxy URL (http/https/socks5)
---no-ssl-check Ignore SSL certificate errors
---user-agent <string> Custom user agent
-
-Performance:
---request-delay <ms> Delay between requests (default: 1000)
---timeout <ms> Page navigation timeout (default: 30000)
-
-Output:
--v, --verbose <level> Verbosity level 0-3 (default: 1)
---debug Enable debug logging
--h, --help Display help
---version Display version
-
-text
+    Permission issues: avoid sudo; ensure nvm use 20 before npm install.
 
 ---
 
