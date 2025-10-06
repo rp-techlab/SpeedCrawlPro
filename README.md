@@ -123,7 +123,7 @@ nvm use 20
 echo "20" > .nvmrc
 
 # Clone the repository
-git clone https://github.com/rpxsec/SpeedCrawlPro.git
+git clone https://github.com/rp-techlab/SpeedCrawlPro.git
 cd SpeedCrawlPro
 
 # Install dependencies
@@ -137,7 +137,7 @@ npx playwright install chromium
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/rpxsec/SpeedCrawlPro.git
+git clone https://github.com/rp-techlab/SpeedCrawlPro.git
 
 # 2. Navigate to the directory
 cd SpeedCrawlPro
@@ -711,7 +711,7 @@ SpeedCrawl Pro is licensed under the [MIT License](LICENSE).
 ```
 MIT License
 
-Copyright (c) 2024 rpxsec
+Copyright (c) 2024 rp-techlab
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -746,8 +746,8 @@ SOFTWARE.
 
 ## 🔗 Resources
 
-- **GitHub Repository**: [github.com/rpxsec/SpeedCrawlPro](https://github.com/rpxsec/SpeedCrawlPro)
-- **Issues & Bugs**: [github.com/rpxsec/SpeedCrawlPro/issues](https://github.com/rpxsec/SpeedCrawlPro/issues)
+- **GitHub Repository**: [github.com/rp-techlab/SpeedCrawlPro](https://github.com/rp-techlab/SpeedCrawlPro)
+- **Issues & Bugs**: [github.com/rp-techlab/SpeedCrawlPro/issues](https://github.com/rp-techlab/SpeedCrawlPro/issues)
 - **Playwright Docs**: [playwright.dev](https://playwright.dev/)
 - **Nuclei Templates**: [github.com/projectdiscovery/nuclei-templates](https://github.com/projectdiscovery/nuclei-templates)
 
@@ -758,8 +758,8 @@ SOFTWARE.
 If you encounter issues or have questions:
 
 1. Check the [Troubleshooting](#-troubleshooting) section
-2. Search [existing issues](https://github.com/rpxsec/SpeedCrawlPro/issues)
-3. Open a [new issue](https://github.com/rpxsec/SpeedCrawlPro/issues/new) with:
+2. Search [existing issues](https://github.com/rp-techlab/SpeedCrawlPro/issues)
+3. Open a [new issue](https://github.com/rp-techlab/SpeedCrawlPro/issues/new) with:
    - Node.js version (`node -v`)
    - Operating system
    - Command used
@@ -770,7 +770,7 @@ If you encounter issues or have questions:
 
 <div align="center">
 
-Made with 🖤 by [rpxsec](https://github.com/rpxsec)
+Made with 🖤 by [rp-techlab](https://github.com/rp-techlab)
 
 **[⬆ Back to Top](#-speedcrawl-pro)**
 
