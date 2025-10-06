@@ -416,50 +416,9 @@ npx speedcrawl -u https://app.example.com/form
 --submit-forms
 -i input.json
 
-text
-
-### Issue: Proxy Connection Fails
-
-**Error:**
-
-Error: connect ECONNREFUSED
 
 text
 
-**Solution:**
-
-Test proxy format
-
-npx speedcrawl -u https://example.com
---proxy "http://username:password@proxy-host:8080"
---no-ssl-check
-For SOCKS proxy
-
-npx speedcrawl -u https://example.com
---proxy "socks5://proxy-host:1080"
-
-text
-
-### Issue: Out of Memory
-
-**Error:**
-
-JavaScript heap out of memory
-
-text
-
-**Solution:**
-
-Increase Node.js memory limit
-
-NODE_OPTIONS="--max-old-space-size=4096" npx speedcrawl -u https://example.com
-Or reduce crawl scope
-
-npx speedcrawl -u https://example.com -p 50 -d 2
-
-text
-
----
 
 ## 📝 Advanced Configuration
 
