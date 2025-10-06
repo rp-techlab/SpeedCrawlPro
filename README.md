@@ -1,159 +1,531 @@
-SpeedCrawl Pro 🚀 — SPA Security Crawler
+text
+<h1 align="center">
+  🚀 SpeedCrawl Pro
+</h1>
 
-A Playwright‑powered, security‑aware crawler for modern SPAs that fills React‑controlled forms safely, maps runtime API endpoints, detects secrets, and emits JSON/JSONL/HAR/HTTP outputs for workflows and CI pipelines.
-Highlights ✨
+<h4 align="center">Next-Generation SPA Security Crawler for Penetration Testing</h4>
 
-    React‑safe form automation with native setters for value/checked, proper select change commits, and guarded POST detection.
+<p align="center">
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-_red.svg"></a>
+<a href="https://github.com/rpxsec/SpeedCrawlPro/releases"><img src="https://img.shields.io/github/v/release/rpxsec/SpeedCrawlPro"></a>
+<a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen"></a>
+<a href="https://github.com/rpxsec/SpeedCrawlPro"><img src="https://img.shields.io/github/stars/rpxsec/SpeedCrawlPro"></a>
+<a href="https://github.com/rpxsec/SpeedCrawlPro/issues"><img src="https://img.shields.io/github/issues/rpxsec/SpeedCrawlPro"></a>
+</p>
 
-Runtime endpoint capture via injected fetch/XHR hooks combined with deep JS chunk analysis for hidden APIs.
+<p align="center">
+  <a href="#-features">Features</a> •
+  <a href="#-installation">Installation</a> •
+  <a href="#-quick-start">Quick Start</a> •
+  <a href="#-usage-examples">Usage Examples</a> •
+  <a href="#-output-formats">Output</a> •
+  <a href="#-troubleshooting">Troubleshooting</a>
+</p>
 
-Stealth headful/headless browser control, CSP bypass, proxy support, UA/WebGL hardening, and optional SSL ignore.
+---
 
-Streaming JSONL, HAR, raw HTTP, and summaries in a deterministic output directory structure.
-Table of Contents 📚
+## 🎯 What is SpeedCrawl Pro?
 
-    Installation and Setup
+**SpeedCrawl Pro** is a powerful, Playwright-based web crawler designed specifically for **modern Single Page Applications** (React, Vue, Angular). It automatically discovers routes, fills and submits complex multi-step forms, captures runtime API endpoints, detects secrets, and generates multiple output formats for security testing workflows.
 
-Quick Start
+**Perfect for:**
+- 🔒 Penetration testers and security researchers
+- 🐛 Bug bounty hunters
+- 🤖 Automated security pipelines
+- 📊 API discovery and mapping
+- 🔍 Secret scanning in web applications
 
-Usage and Examples
+---
 
-SPA Forms Guide
+## ✨ Features
 
-Endpoint Discovery
+- **🎯 SPA-Safe Form Automation** — Native property descriptors for React Hook Form with smart checkbox/radio/select handling
+- **🔍 Runtime Endpoint Discovery** — Captures fetch/XHR API calls in real-time via injected hooks
+- **📦 Deep JavaScript Analysis** — Extracts hidden endpoints from minified chunks using AST parsing
+- **🕵️ Stealth Browser Control** — Anti-detection with UA/WebGL spoofing, headful/headless modes
+- **📊 Multiple Output Formats** — JSON, JSONL (Nuclei-compatible), HAR, raw HTTP requests
+- **🔐 Secrets Detection** — Scans for API keys, tokens, credentials in DOM and JS
+- **🌐 Smart Scope Control** — Same-origin, subdomain filtering, asset blocking
+- **📈 Real-time Progress** — Live CLI progress bar with detailed statistics
 
-Outputs and Artifacts
+---
 
-Configuration Behavior
+## 📥 Installation
 
-Browser and Stealth
+### Prerequisites
 
-Troubleshooting
+- **Node.js 20+** (recommended) or Node.js 18+
+- **Git** installed on your system
+- **Chromium browser** will be installed automatically via Playwright
 
-License
-Installation and Setup 🧱
+### Step 1: Install Node.js with NVM
 
-    Requirements: Node.js 20 via nvm is recommended for modern Playwright and SPA automation, while engines specify >=16 in package.json.
+Install NVM (if not already installed)
 
-Playwright browsers must be installed before first run to make Chromium available.
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+Restart terminal or run:
 
-Setup
+source ~/.bashrc
+Install Node.js 20
 
-bash
-git clone <your-repo-url> speedcrawl-pro
-cd speedcrawl-pro
 nvm install 20
 nvm use 20
-node -v   # should be v20.x
+Verify installation
+
+node -v
+Should show: v20.x.x
+
+text
+
+### Step 2: Clone the Repository
+
+Clone from GitHub
+
+git clone https://github.com/rpxsec/SpeedCrawlPro.git
+Navigate to directory
+
+cd SpeedCrawlPro
+
+text
+
+### Step 3: Install Dependencies
+
+Install npm packages
+
 npm install
-npm run install-browsers   # or: npx playwright install
+Install Playwright browsers (Chromium)
 
-The CLI entry is bin/speedcrawl.js and is exposed as the speedcrawl command via the package.json bin mapping.
-Quick Start ⚡
+npm run install-browsers
+or
 
-    Minimal crawl with JSON output: npx speedcrawl -u https://example.com --formats json.
+npx playwright install chromium
 
-Headful SPA analysis with deep JS scanning: npx speedcrawl -u https://example.com --headful --deep-js-analysis --formats json,jsonl.
+text
 
-Self‑signed targets with proxy routing: npx speedcrawl -u https://internal.example --proxy "http://user:pass@127.0.0.1:8080" --no-ssl-check --formats json,har,http.
-Usage and Examples 🧭
+### Step 4: Verify Installation
 
-Core flags
+Run a test crawl
 
-    -u/--url: target URL is required and drives initial scope.
+npx speedcrawl -u https://example.com --formats json
+Check output directory
 
--p/--pages and -d/--depth: bound page count and crawl depth.
+ls -la speedcrawl-output/
 
---formats json,jsonl,har,http: select output reporters and formats.
+text
 
-Scope and filtering
+**Expected output:**
 
-    --same-origin confines links to the exact origin of the start URL.
+✅ STEALTH browser launched
+📄 Crawling: https://example.com
+✅ Crawl completed in 5.23s
+📊 Output saved to: ./speedcrawl-output
 
---include-subdomains extends scope to subdomains under the base host.
+text
 
---blocked-extensions "jpg,png,css,woff": skip asset types at enqueue time.
+---
 
-Forms and analysis
+## 🚀 Quick Start
 
-    --submit-forms enables form submit attempts on discovered forms.
+### Basic Web Crawl
 
---use-faker allows realistic input generation where Faker is available.
+npx speedcrawl -u https://example.com --formats json,jsonl
 
---deep-js-analysis enables chunk parsing for static endpoint discovery.
+text
 
-Network and browser
+### Crawl with Form Submission
 
-    --proxy supports http(s)/socks with optional authentication.
+npx speedcrawl -u https://app.example.com/login
+--submit-forms
+--use-faker
+--formats json,jsonl,har
 
---no-ssl-check allows ignoreHTTPSErrors in stealth contexts.
+text
 
---headful launches a visible window with devtools and proper viewport null.
-SPA Forms Guide 📝
+### Visible Browser Mode (Debug)
 
-    Native setters: value and checked are set via property descriptors to ensure React Hook Form state is updated, followed by input/change/blur events.
+npx speedcrawl -u https://example.com
+--headful
+--deep-js-analysis
+-v 2
 
-Checkables: checkboxes and radios are toggled explicitly with event dispatch to commit state in controlled components.
+text
 
-Selects: the first non‑empty option is preferred and a change event is fired to persist selection.
+---
 
-Submission: visible, enabled submit buttons are preferred with JS click fallback and a guarded wait for non‑analytics POST detection.
-Endpoint Discovery 🎯
+## 📖 Usage Examples
 
-    Runtime: injected fetch/XHR hooks append requests to window.__speedcrawl_requests and EndpointAnalyzer aggregates method, path, and URL for analysis.
+### 1. Basic Crawl with Scope Limits
 
-Static: JSChunkAnalyzer enumerates chunk URLs and parses code via AST/regex to extract hidden endpoints, methods, and parameters when deep analysis is enabled.
+npx speedcrawl
+-u https://example.com
+-p 100
+-d 3
+--formats json,jsonl
 
-Union: the engine merges runtime and static endpoints, dedupes by path, and includes counts in summary outputs.
-Outputs and Artifacts 📦
+text
 
-    Streaming JSONL: requests‑stream.jsonl is appended during crawl to avoid high memory usage.
+**Explanation:**
+- `-u`: Target URL
+- `-p 100`: Maximum 100 pages
+- `-d 3`: Maximum depth of 3 levels
+- `--formats`: Output formats
 
-HAR: speedcrawl-requests.har enables broad tooling and replay analysis.
+### 2. SPA Form Testing with Faker Data
 
-Raw HTTP: http-requests/*.http contains one file per request for SQLMap/manual testing.
+npx speedcrawl
+-u https://app.example.com/register
+--submit-forms
+--use-faker
+--same-origin
+--formats json,jsonl,har,http
 
-JSON/JSONL: speedcrawl-results.json and nuclei-targets.jsonl for automation workflows.
+text
 
-Summaries: summary.json and plain summary.md list pages, forms, fields, requests, endpoints, secrets, JS chunks, and duration.
-Configuration Behavior ⚙️
+**What it does:**
+- Fills forms with realistic fake data (email, names, etc.)
+- Submits forms and captures responses
+- Generates HAR file for request replay
+- Creates raw HTTP files for SQLMap
 
-    Aliases: pages→maxPages, depth→maxDepth, input/customInputData preserved, headful→headless:false, deepJsAnalysis→deepJSAnalysis, and noSslCheck/sslCheck:false→noSSLCheck.
+### 3. Deep JavaScript Analysis for API Discovery
 
-Blocked extensions: CSV/array forms are normalized once and enforced during enqueue filtering.
+npx speedcrawl
+-u https://app.example.com
+--deep-js-analysis
+--extract-secrets
+--formats json,jsonl
+-v 2
 
-All flags are retained without renaming, with normalization applied centrally for stable downstream consumption.
-Browser and Stealth 🕵️
+text
 
-    Chromium launch: honors headless and headful with devtools enabled and viewport null for visible sessions.
+**Features:**
+- Parses JavaScript chunks for hidden endpoints
+- Extracts API routes from minified code
+- Detects secrets (API keys, tokens)
+- Verbose logging level 2
 
-SSL and CSP: ignoreHTTPSErrors is gated by noSSLCheck and bypassCSP is enabled for robust injection and evaluation.
+### 4. Proxy + SSL Ignore for Internal Testing
 
-Anti‑bot: navigator.webdriver false, UA‑CH brand cleanup, WebGL spoofing, and permissions patches reduce trivial detection.
+npx speedcrawl
+-u https://internal.company.local
+--proxy "http://user:pass@proxy.company.local:8080"
+--no-ssl-check
+--same-origin
+--formats json,har
 
-Request hooks: a lightweight init script captures fetch/XHR to populate window.__speedcrawl_requests across all pages.
-Crawl Flow 🔁
+text
 
-    Queue: breadth‑first within maxPages/maxDepth, dedupes links, strips hashes, and ignores javascript:/mailto:/tel: schemes.
+**Use case:**
+- Internal pentesting through corporate proxy
+- Self-signed certificates
+- Authenticated proxy support
 
-Scope: same‑origin with optional include‑subdomains; blocked extensions filtered at add‑time.
+### 5. Subdomain Crawling with Asset Filtering
 
-Per page: detect tech, deep analyze chunks (opt‑in), process forms, capture endpoints, scan secrets, stream requests, and emit progress events.
-Troubleshooting 🧩
+npx speedcrawl
+-u https://example.com
+--same-origin
+--include-subdomains "*.example.com"
+--blocked-extensions "jpg,png,gif,css,woff,woff2"
+-p 500
+--formats json,jsonl
 
-    Missing browsers: rerun npx playwright install or npm run install-browsers if Chromium cannot launch.
+text
 
-SSL errors: add --no-ssl-check to allow stealth contexts to ignore certificate issues on self‑signed targets.
+**Explanation:**
+- Crawls main domain + subdomains
+- Skips image and font files
+- Limits to 500 pages
 
-Outputs missing: ensure --formats includes json/jsonl/har/http and the output directory is writable.
-License 📄
+### 6. Custom Input Data for Forms
 
-    MIT License as declared in package.json.
+Create `input.json`:
 
-Notes for Contributors 🤝
+{
+"email": "test@example.com",
+"username": "testuser",
+"password": "Test123!@#"
+}
 
-    Preserve existing flag names; introduce only non‑breaking alias normalization in ConfigManager to keep cross‑file contracts stable.
+text
 
-Favor small, localized changes with Node 18+ compatibility and Playwright alignment, validated by CLI runs and generated artifacts.
+Run with custom data:
 
-If a fully themed README with badges and screenshots is desired, assets can be added later without changing any CLI flag or module contract documented above.
+npx speedcrawl
+-u https://app.example.com/login
+--submit-forms
+-i input.json
+--formats json,har
+
+text
+
+---
+
+## 🎛️ Command-Line Options
+
+Usage: speedcrawl [options]
+
+Options:
+-u, --url <url> Target URL (required)
+-p, --pages <number> Max pages to crawl (default: 100)
+-d, --depth <number> Max crawl depth (default: 3)
+-o, --output <dir> Output directory (default: ./speedcrawl-output)
+--formats <formats> Output formats: json,jsonl,har,http (default: json,jsonl)
+
+Scope:
+--same-origin Only crawl same-origin links
+--include-subdomains <pattern> Include subdomains (e.g., *.example.com)
+--blocked-extensions <list> Skip file extensions (comma-separated)
+
+Forms:
+--submit-forms Enable form submission
+--use-faker Use Faker.js for realistic form data
+-i, --input <file> Custom input data JSON file
+
+Analysis:
+--deep-js-analysis Enable deep JavaScript chunk analysis
+--extract-secrets Scan for secrets and tokens
+
+Browser:
+--headful Launch visible browser with devtools
+--headless Headless mode (default)
+--proxy <url> Proxy URL (http/https/socks5)
+--no-ssl-check Ignore SSL certificate errors
+--user-agent <string> Custom user agent
+
+Performance:
+--request-delay <ms> Delay between requests (default: 1000)
+--timeout <ms> Page navigation timeout (default: 30000)
+
+Output:
+-v, --verbose <level> Verbosity level 0-3 (default: 1)
+--debug Enable debug logging
+-h, --help Display help
+--version Display version
+
+text
+
+---
+
+## 📄 Output Formats
+
+SpeedCrawl Pro generates multiple output formats in `./speedcrawl-output/`:
+
+| Format | File | Description | Use Case |
+|--------|------|-------------|----------|
+| **JSON** | `speedcrawl-results.json` | Complete results with pages, forms, endpoints | General analysis, scripting |
+| **JSONL** | `nuclei-targets.jsonl` | Nuclei-compatible request targets | Nuclei vulnerability scanning |
+| **HAR** | `speedcrawl-requests.har` | HTTP Archive for all requests | Request replay, analysis tools |
+| **HTTP** | `http-requests/*.http` | Raw HTTP request files | SQLMap, manual testing |
+| **Summary** | `summary.json` / `summary.md` | Human-readable statistics | Quick overview |
+| **Endpoints** | `endpoints.txt` | Discovered API endpoints | API testing |
+| **Secrets** | `secrets.txt` | Detected secrets (unmasked) | Security review |
+| **URLs** | `all-urls.txt` | All discovered URLs | Sitemap, URL analysis |
+
+### Example Summary Output
+
+SpeedCrawl Summary
+
+    Pages: 47
+
+    Forms: 3
+
+    Fields: 18
+
+    Requests: 142
+
+    Endpoints: 12
+
+    Secrets: 2
+
+    JS Chunks: 8
+
+    Duration: 23.45s
+
+text
+
+---
+
+## 🔧 Troubleshooting
+
+### Issue: Browser Not Found
+
+**Error:**
+
+Error: Chromium browser not found
+
+text
+
+**Solution:**
+
+Install Playwright browsers
+
+npx playwright install chromium
+Or use npm script
+
+npm run install-browsers
+
+text
+
+### Issue: SSL Certificate Errors
+
+**Error:**
+
+Error: certificate has expired
+
+text
+
+**Solution:**
+
+Use --no-ssl-check flag
+
+npx speedcrawl -u https://example.com --no-ssl-check --formats json
+
+text
+
+### Issue: Headful Mode Window Not Showing
+
+**Error:**
+
+deviceScaleFactor option is not supported with null viewport
+
+text
+
+**Solution:**
+This is fixed in the latest version. Update BrowserManager.js or pull latest code:
+
+git pull origin main
+npm install
+
+text
+
+### Issue: Forms Not Being Filled
+
+**Problem:** React forms not detecting input changes
+
+**Solution:**
+SpeedCrawl Pro uses native property descriptors for React Hook Form compatibility. Ensure you're using the latest version:
+
+git pull origin main
+
+text
+
+For custom input data:
+
+npx speedcrawl -u https://app.example.com/form
+--submit-forms
+-i input.json
+
+text
+
+### Issue: Proxy Connection Fails
+
+**Error:**
+
+Error: connect ECONNREFUSED
+
+text
+
+**Solution:**
+
+Test proxy format
+
+npx speedcrawl -u https://example.com
+--proxy "http://username:password@proxy-host:8080"
+--no-ssl-check
+For SOCKS proxy
+
+npx speedcrawl -u https://example.com
+--proxy "socks5://proxy-host:1080"
+
+text
+
+### Issue: Out of Memory
+
+**Error:**
+
+JavaScript heap out of memory
+
+text
+
+**Solution:**
+
+Increase Node.js memory limit
+
+NODE_OPTIONS="--max-old-space-size=4096" npx speedcrawl -u https://example.com
+Or reduce crawl scope
+
+npx speedcrawl -u https://example.com -p 50 -d 2
+
+text
+
+---
+
+## 📝 Advanced Configuration
+
+### Custom User Agent
+
+npx speedcrawl -u https://example.com
+--user-agent "Mozilla/5.0 (Custom Bot) SpeedCrawl/1.0"
+
+text
+
+### Request Delay for Rate Limiting
+
+npx speedcrawl -u https://example.com
+--request-delay 2000
+--timeout 60000
+
+text
+
+### Debug Mode with Verbose Logging
+
+npx speedcrawl -u https://example.com
+--debug
+-v 3
+--headful
+
+text
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these guidelines:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+**Development guidelines:**
+- Preserve existing CLI flag names
+- Add tests for new features
+- Follow Node.js 18+ compatibility
+- Document new options in README
+
+---
+
+## 📜 License
+
+SpeedCrawl Pro is licensed under the [MIT License](LICENSE).
+
+---
+
+## 🙏 Acknowledgments
+
+- Built with [Playwright](https://playwright.dev/)
+- Inspired by modern web security testing needs
+- Special thanks to the security research community
+
+---
+
+<div align="center">
+
+**Made with 🖤 by [rpxsec](https://github.com/rpxsec)**
+
+[Report Bug](https://github.com/rpxsec/SpeedCrawlPro/issues) · [Request Feature](https://github.com/rpxsec/SpeedCrawlPro/issues) · [Documentation](https://github.com/rpxsec/SpeedCrawlPro)
+
+</div>
+
